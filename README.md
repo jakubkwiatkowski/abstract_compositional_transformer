@@ -45,10 +45,34 @@ python main.py pp --phase "eval" --tokenizer "task" --masking "last" --data_spli
 
 2. Choice maker
 
-a. Eval DCM
+a. Evaluate DCM
 
 ```bash
-python main.py 
+python main.py cm --phase "eval" --tokenizer "task" --choice_maker "dcm" --data_split "test" --pp_load_weights "model/task_last" 
+```
+
+b. Train LCM
+
+```bash
+python main.py cm --phase "train" --tokenizer "task" --choice_maker "lcm" --data_split "train" --save_weights "model/lcm" --pp_load_weights "model/task_last" --epochs 200
+```
+
+c. Evaluate LCM
+
+```bash
+python main.py cm --phase "eval" --tokenizer "task" --choice_maker "lcm" --data_split "test" --load_weights "model/lcm" 
+```
+
+d. Train LCM contrastive
+
+```bash
+python main.py cm --phase "train" --tokenizer "task" --choice_maker "lcm_contrastive" --data_split "train" --save_weights "model/lcm_contrastive" --pp_load_weights "model/task_last"  --epochs 200
+```
+
+e. Evaluate LCM contrastive
+
+```bash
+python main.py cm --phase "eval" --tokenizer "task" --choice_maker "lcm_contrastive" --data_split "test" --load_weights "model/lcm_contrastive" 
 ```
 
 Weights are available hear.
