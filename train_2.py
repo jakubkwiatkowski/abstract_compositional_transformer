@@ -7,6 +7,7 @@ tf.experimental.numpy.experimental_enable_numpy_behavior(prefer_float32=True)
 from huggingface_hub import from_pretrained_keras
 from datasets import load_dataset
 import numpy as np
+from core_tools.tmp import  tmp_compile
 
 from raven_utils.models.transformer import get_rav_trans
 from raven_utils.params import TaskTokenizerParameters
@@ -45,8 +46,12 @@ model = get_rav_trans(
     d,
     **asdict(TaskTokenizerParameters())
 )
-model.compile()
-model.fit(tf_data)
+
+model(d)
+model.load_weights("/home/jkwiatkowski/all/best/model/51f18f4848c1450188bed731f98552b6/weights_13-0.79")
+tmp_compile(model)
+result = model.evaluate(tf_data, return_dict=True)
+# model.fit(tf_data)
 # model(data[0])
 
-print("End")
+print(result)
