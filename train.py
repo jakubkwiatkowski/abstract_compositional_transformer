@@ -32,12 +32,12 @@ model = get_rav_trans(
 
 def generator():
     for d in data:
-        d = {
+        rd = {
             'inputs': np.asarray(d['inputs'], dtype="uint8"),
             'index': np.asarray(d['index'], dtype="uint8")[..., None],
             'target': np.asarray(d['target'], dtype="uint8"),
         }
-        yield d
+        yield rd
 
 
 tf_data = tf.data.Dataset.from_generator(generator,
