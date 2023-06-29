@@ -10,9 +10,9 @@ It was developed for research purposes by the Neurosymbolic Systems Lab at Pozna
 
 
 Code for models and utilities is available in repositories:
-- [core_tools](https://github.com/jakubkwiatkowski/core_tools.git)
-- [grid_transformer](https://github.com/jakubkwiatkowski/compositional_transformer.git)
-- [raven_utils](https://github.com/jakubkwiatkowski/raven_tools.git)
+- [core_tools](https://github.com/jakubkwiatkowski/core_tools)
+- [grid_transformer](https://github.com/jakubkwiatkowski/compositional_transformer)
+- [raven_utils](https://github.com/jakubkwiatkowski/raven_tools)
 
 # Installation
 
