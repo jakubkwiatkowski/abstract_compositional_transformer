@@ -56,7 +56,7 @@ def get_tf_dataset(
 def property_prediction(
         phase: str = "train",
         tokenizer: str = "task",
-        masking: str = "last",
+        masking: str = "query",
         data_split: str = "train",
         load_weights: str = None,
         save_weights: str = "model/weights",
@@ -70,7 +70,7 @@ def property_prediction(
     Args:
         phase (str, optional): The phase of the model [train, eval].
         tokenizer (str, optional): The tokenizer to use [task, row, panel].
-        masking (str, optional): The masking strategy [last, random].
+        masking (str, optional): The masking strategy [query, random].
         data_split (str, optional): The data split to use [train, val, test].
         load_weights (str, optional): The path to load weights from.
         save_weights (str, optional): The path to save weights.
@@ -90,6 +90,8 @@ def property_prediction(
         data_split=data_split,
         batch_size=batch_size
     )
+    if masking == "query":
+        masking = "last"
     tokenizer.mask = masking
     model = get_rav_trans(
         sample_data,

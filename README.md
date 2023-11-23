@@ -26,22 +26,23 @@ pipenv install
 Launch a new shell session with `pipenv shell` or configure the environment in your IDE.
 
 1. Property prediction
+2. 
 a. Train first phase - Task tokenizer with random masking
 
 ```bash
 python main.py pp --phase "train" --tokenizer "task" --masking "random" --data_split "train" --save_weights "model/act_task_random/weights" --epochs 200
 ```
 
-b. Train second phase - Task tokenizer with last masking
+b. Train second phase - Task tokenizer with query masking
 
 ```bash
-python main.py pp --phase "train" --tokenizer "task" --masking "last" --data_split "train" --save_weights "model/act_task_both/weights" --load_weights "act_model/task_random/weights" --epochs 20
+python main.py pp --phase "train" --tokenizer "task" --masking "query" --data_split "train" --save_weights "model/act_task_both/weights" --load_weights "act_model/task_random/weights" --epochs 20
 ```
 
 c. Evaluate model 
 
 ```bash
-python main.py pp --phase "eval" --tokenizer "task" --masking "last" --data_split "test" --load_weights "model/act_task_both/weights"
+python main.py pp --phase "eval" --tokenizer "task" --masking "query" --data_split "test" --load_weights "model/act_task_both/weights"
 ```
 
 2. Choice maker
