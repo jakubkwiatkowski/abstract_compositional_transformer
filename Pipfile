@@ -17,4 +17,4 @@ datasets = "*"
 fire = "*"
 
 [requires]
-python_version = "3.11.3"
+python_version = "3.11"

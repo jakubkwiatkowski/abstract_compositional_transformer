@@ -1,3 +1,9 @@
+import pyarrow
+pyarrow.PyExtensionType.set_auto_load(True)
+
+import pyarrow_hotfix
+pyarrow_hotfix.uninstall()
+
 from dataclasses import asdict, dataclass
 import tensorflow as tf
 from core_tools.start import keras_get_item
@@ -10,6 +16,7 @@ import fire
 from datasets import load_dataset
 
 from core_tools.tmp import tmp_compile
+from core_tools.core import  as_dict
 
 from raven_utils.models.transformer import get_rav_trans, rav_select_model
 from raven_utils.params import DirectChoiceMakerParameters, TaskTokenizerParameters, LearnableChoiceMakerParameters, \
@@ -98,9 +105,9 @@ def property_prediction(
 def choice_maker_(
         phase: str = "train",
         tokenizer: str = "task",
-        choice_maker: str = "contrastive",
+        choice_maker: str = "ccm",
         data_split: str = "train",
-        pp_load_weights: str = None,
+        act_load_weights: str = None,
         load_weights: str = None,
         save_weights: str = "model/weights",
         batch_size: int = 64,
@@ -112,9 +119,9 @@ def choice_maker_(
     Args:
         phase (str, optional): The phase of the model [train, eval].
         tokenizer (str, optional): The tokenizer to use [task, row, panel].
-        choice_maker (str, optional): The type of choice making [dcm, lcm, lcm-contrastive].
+        choice_maker (str, optional): The type of choice making [dcm, lcm, ccm].
         data_split (str, optional): The data split to use [train, val, test].
-        pp_load_weights (str, optional): The path to load property prediction weights from.
+        act_load_weights (str, optional): The path to load property prediction weights from.
         load_weights (str, optional): The path to load weights from.
         save_weights (str, optional): The path to save weights.
         batch_size (int, optional): The batch size.
@@ -134,7 +141,7 @@ def choice_maker_(
             choice_maker = DirectChoiceMakerParameters
         elif choice_maker == "lcm":
             choice_maker = LearnableChoiceMakerParameters
-        elif choice_maker == "lcm_contrastive":
+        elif choice_maker == "ccm":
             choice_maker = Latent3ContrastiveLearnableChoiceMakerParameters
 
     tf_data, sample_data = get_tf_dataset(
@@ -143,26 +150,35 @@ def choice_maker_(
     )
 
     @dataclass
-    class TmpRaven(choice_maker, tokenizer.__class__):
+    class TmpRaven(tokenizer.__class__, choice_maker):
         pass
 
     p = TmpRaven()
 
-    if hasattr(p, "predictor_size") and hasattr(p, "predictor_no"):
+    if choice_maker == LearnableChoiceMakerParameters:
+        p.additional_copy = True
+        p.mask = "last"
+        # p.additional_copy = True
         p.predictor = [p.predictor_size] * p.predictor_no
-
-    if hasattr(p, "predictor_norm") and p.predictor_norm is not None:
-        p.predictor_pre = p.predictor_norm[0]
-        p.predictor_post = p.predictor_norm[1]
+        if p.predictor_norm is not None:
+            p.predictor_pre = p.predictor_norm[0]
+            p.predictor_post = p.predictor_norm[1]
 
     model = rav_select_model(
         sample_data,
-        load_weights=pp_load_weights,
+        load_weights=act_load_weights,
         **{
-            **asdict(p),
+            **as_dict(p),
             **kwargs
         }
     )
+
+    if choice_maker == LearnableChoiceMakerParameters:
+        if p.train_only_predictor:
+            model[0, 0].trainable = False
+            model[0, 1].trainable = False
+            if p.train_only_predictor > 1:
+                model[0, 1, -2].trainable = True
 
     run_model(epochs, load_weights, save_weights, model, phase, sample_data, tf_data)
 
