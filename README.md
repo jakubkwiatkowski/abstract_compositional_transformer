@@ -16,14 +16,20 @@ Code for models and utilities is available in repositories:
 
 # Installation
 
-You need pipenv to install the package. To install the package, run the following command:
+To install the necessary packages, follow these steps:
+
+1. Install Pipenv, a virtualenv management tool, if you haven't already.
+
+2. Run the following command in your terminal:
 
 ```bash
 pipenv install
 ```
+This will install all the required packages in your virtual environment.
 
 # Usage
 Launch a new shell session with `pipenv shell` or configure the environment in your IDE.
+The following commands will allow you to replicate the key experiment from the publication:
 
 1. Property prediction
 
