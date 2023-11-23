@@ -28,19 +28,19 @@ pipenv install
 a. Train first phase - Task tokenizer with random masking
 
 ```bash
-python main.py pp --phase "train" --tokenizer "task" --masking "random" --data_split "train" --save_weights "model/act_task_random" --epochs 200
+python main.py pp --phase "train" --tokenizer "task" --masking "random" --data_split "train" --save_weights "model/act_task_random/weights" --epochs 200
 ```
 
 b. Train second phase - Task tokenizer with last masking
 
 ```bash
-python main.py pp --phase "train" --tokenizer "task" --masking "last" --data_split "train" --save_weights "model/act_task_both" --load_weights "act_model/task_random" --epochs 20
+python main.py pp --phase "train" --tokenizer "task" --masking "last" --data_split "train" --save_weights "model/act_task_both/weights" --load_weights "act_model/task_random/weights" --epochs 20
 ```
 
 c. Evaluate model 
 
 ```bash
-python main.py pp --phase "eval" --tokenizer "task" --masking "last" --data_split "test" --load_weights "model/act_task_both"
+python main.py pp --phase "eval" --tokenizer "task" --masking "last" --data_split "test" --load_weights "model/act_task_both/weights"
 ```
 
 2. Choice maker
@@ -48,31 +48,31 @@ python main.py pp --phase "eval" --tokenizer "task" --masking "last" --data_spli
 a. Evaluate DCM
 
 ```bash
-python main.py cm --phase "eval" --tokenizer "task" --choice_maker "dcm" --data_split "test" --act_load_weights "model/act_task_both" 
+python main.py cm --phase "eval" --tokenizer "task" --choice_maker "dcm" --data_split "test" --act_load_weights "model/act_task_both/weights" 
 ```
 
 b. Train LCM
 
 ```bash
-python main.py cm --phase "train" --tokenizer "task" --choice_maker "lcm" --data_split "train" --save_weights "model/lcm_task_both" --act_load_weights "model/act_task_both" --epochs 200
+python main.py cm --phase "train" --tokenizer "task" --choice_maker "lcm" --data_split "train" --save_weights "model/lcm_task_both/weights" --act_load_weights "model/act_task_both/weights" --epochs 200
 ```
 
 c. Evaluate LCM
 
 ```bash
-python main.py cm --phase "eval" --tokenizer "task" --choice_maker "lcm" --data_split "test" --load_weights "model/lcm_task_both" 
+python main.py cm --phase "eval" --tokenizer "task" --choice_maker "lcm" --data_split "test" --load_weights "model/lcm_task_both/weights" 
 ```
 
 d. Train CCM
 
 ```bash
-python main.py cm --phase "train" --tokenizer "task" --choice_maker "ccm" --data_split "train" --save_weights "model/ccm_task_both" --act_load_weights "model/act_task_both"  --epochs 200
+python main.py cm --phase "train" --tokenizer "task" --choice_maker "ccm" --data_split "train" --save_weights "model/ccm_task_both/weights" --act_load_weights "model/act_task_both/weights"  --epochs 200
 ```
 
 e. Evaluate CCM
 
 ```bash
-python main.py cm --phase "eval" --tokenizer "task" --choice_maker "ccm" --data_split "test" --load_weights "model/ccm_task_both" 
+python main.py cm --phase "eval" --tokenizer "task" --choice_maker "ccm" --data_split "test" --load_weights "model/ccm_task_both/weights" 
 ```
 
-Weights are available hear.
+Weights are available hear: https://drive.google.com/drive/folders/1kxfS_QATWctTJFV3lzM99U83CnKV1zFU
