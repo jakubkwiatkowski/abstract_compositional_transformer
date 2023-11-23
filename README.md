@@ -23,6 +23,7 @@ pipenv install
 ```
 
 # Usage
+Launch a new shell session with `pipenv shell` or configure the environment in your IDE.
 
 1. Property prediction
 a. Train first phase - Task tokenizer with random masking
